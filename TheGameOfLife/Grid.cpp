@@ -14,6 +14,18 @@ Grid::Grid(const u_int& _length, const u_int& _width)
 	Setup();
 }
 
+Grid::~Grid()
+{
+	for (u_int _rowIndex = 0; _rowIndex < length; _rowIndex++)
+	{
+		for (u_int _colIndex = 0; _colIndex < width; _colIndex++)
+		{
+			delete tiles[_rowIndex][_colIndex];
+		}
+
+	}
+}
+
 void Grid::Setup()
 {
 	// vector temporaire
@@ -81,7 +93,7 @@ string Grid::ToString(const bool _withGrid) const
 				_text += "----";
 				_text += "+";
 			}
-			_text +=("", true);
+			_text += "\n";
 		}
 
 		for (u_int _colIndex = 0; _colIndex < width; _colIndex++)
@@ -90,7 +102,7 @@ string Grid::ToString(const bool _withGrid) const
 			_text += tiles[_rowIndex][_colIndex]->ToString();
 			_text +=" ";
 		}
-		if (_withGrid) _text += "|";
+		_text += _withGrid  ? "|\n": "\n";
 	}
 	if (_withGrid)
 	{
@@ -99,7 +111,7 @@ string Grid::ToString(const bool _withGrid) const
 			_text += "+";
 			_text += "----";
 		}
-		_text += "+";
+		_text += "+\n";
 	}
 
 	return _text;

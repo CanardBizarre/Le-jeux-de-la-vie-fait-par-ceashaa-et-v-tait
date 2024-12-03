@@ -13,19 +13,34 @@ Tile::Tile(const string& _appearance, const u_int& _weight)
 	weight = _weight;
 }
 
-void Tile::UpdateWeight(const int _point)
+Tile::~Tile()
+{
+	delete coordinate;
+}
+
+/// <summary>
+/// Permet de changer le poids de la cell,
+/// Si le poid est de 3 alors la méthode renvoie
+/// sa coordonée
+/// Sinon elle renvoie nullptr
+/// </summary>
+/// <param name="_point"></param>
+/// <returns></returns>
+Coordinate* Tile::UpdateWeight(const int _point)
 {
 	weight += _point;
 	weight %= 4;
-	if (weight != 3 && appearance == RESET) return;
+	if (weight != 3 && appearance == RESET) return nullptr;
 	else if (weight == 3 && appearance == RESET)
 	{
 		appearance = WHITE_BG;
-		return;
+		weight = 0;
+		return coordinate;
 	}
 	else
 	{
 		appearance = RESET;
+		return nullptr;
 	}
 }
 
@@ -38,7 +53,7 @@ void Tile::UpdateCell(const string& _appearance, const u_int& _weight)
 
 void Tile::Display() const
 {
-	DISPLAY(appearance, false);
+	DISPLAY(appearance + "  " + RESET, false);
 }
 
 string Tile::ToString()
