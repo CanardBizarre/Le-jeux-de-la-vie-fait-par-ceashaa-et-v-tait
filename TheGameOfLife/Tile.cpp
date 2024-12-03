@@ -2,20 +2,34 @@
 
 Tile::Tile(Coordinate* _coordinate)
 {
+	state = CT_DEAD;
 	coordinate = _coordinate;
 	appearance = RESET;
-	weight = 0;
+	neighbourCount = 0;
 }
 
 Tile::Tile(const string& _appearance, const u_int& _weight)
 {
 	appearance = _appearance;
-	weight = _weight;
+	neighbourCount = _weight;
 }
 
 Tile::~Tile()
 {
 	delete coordinate;
+}
+
+
+void Tile::SelfMutilate()
+{
+	if (!(neighbourCount == 3)) neighbourCount = 0;
+}
+
+void Tile::UpdateCell(const string& _appearance, const u_int& _weight)
+{
+	neighbourCount = _weight;
+	appearance = _appearance;
+	// TODO UPDATE LIST IN GAME
 }
 
 /// <summary>
@@ -26,37 +40,43 @@ Tile::~Tile()
 /// </summary>
 /// <param name="_point"></param>
 /// <returns></returns>
-Coordinate* Tile::UpdateWeight(const int _point)
+void Tile::UpdateNeighbourCount(const int _point)
 {
-	weight += _point;
-	weight %= 4;
-	if (weight != 3 && appearance == RESET) return nullptr;
-	else if (weight == 3 && appearance == RESET)
+	neighbourCount += _point;
+	neighbourCount %= 4;
+	
+}
+
+CellState Tile::UpdateCellState()
+{
+	if (neighbourCount == 2) return state;
+	else if (neighbourCount == 3)
 	{
 		appearance = WHITE_BG;
-		weight = 0;
-		return coordinate;
+		state = CT_ALIVE;
+		return state;
 	}
 	else
 	{
-		appearance = RESET;
-		return nullptr;
+		state = CT_DEAD;
+		return state;
 	}
 }
 
-void Tile::UpdateCell(const string& _appearance, const u_int& _weight)
+void Tile::Display(const bool _debug) const
 {
-	weight = _weight;
-	appearance = _appearance;
-	// TODO UPDATE LIST IN GAME
+	if (_debug)
+	{
+		DISPLAY(to_string(neighbourCount) + RESET, false);
+	}
+	else 
+	{ 
+		DISPLAY(appearance + "  " + RESET, false) 
+	};
 }
 
-void Tile::Display() const
+string Tile::ToString(const bool _debug)
 {
-	DISPLAY(appearance + "  " + RESET, false);
-}
-
-string Tile::ToString()
-{
+	if (_debug) return " " + to_string(neighbourCount);
 	return appearance + "  " + RESET;
 }

@@ -9,17 +9,18 @@ class Game
 	CONSOLE_CURSOR_INFO cursorInfo;
 	Grid* grid;
 	vector<Coordinate*> coordinatesCellAlive;
-	u_int coordinatesCellAliveSize;
 
 public:
 	Game();
+	Game(const int _width, const int _length);
 	~Game();
 
 private:
-	bool AddPoint(Coordinate* _coordinate);
-	bool AddPoint(const Coordinate& _coordinate);
+	void PushCellAlive(Coordinate* _coordinate);
+	void PushCellAlive(const Coordinate& _coordinate);
 	void CheckCellAlive();
 	void ResetWeightCell();
+	void InitGlider();
 
 public:
 	void Gameloop();

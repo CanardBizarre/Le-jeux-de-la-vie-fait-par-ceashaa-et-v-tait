@@ -19,6 +19,11 @@ public:
 		return tiles[_coordinate->x][_coordinate->y];
 	}
 
+	inline Tile* GetTile(Coordinate _coordinate) const
+	{
+		return tiles[_coordinate.x][_coordinate.y];
+	}
+
 	inline u_int GetLength() const
 	{
 		return length;
@@ -39,7 +44,7 @@ private:
 	void Setup();
 
 public:
-	void Display(const bool _withGrid = false) const;
+	void Display(const bool _withGrid = false, const bool _debug = false) const;
 	string ToString(const bool _withGrid = false) const;
 
 };

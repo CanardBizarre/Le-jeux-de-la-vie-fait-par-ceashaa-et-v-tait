@@ -2,13 +2,20 @@
 
 #include "Coordinate.h"
 
+enum CellState
+{
+	CT_DEAD,
+	CT_ALIVE,
+};
+
 class Tile
 {
 	Coordinate* coordinate;
+	CellState state;
 	string appearance;
-	u_int weight;
+	u_int neighbourCount;
 public:
-	inline void SetTile(Coordinate* _coordinate)
+	inline void SetCoordinate(Coordinate* _coordinate)
 	{
 		coordinate = _coordinate;
 	}
@@ -21,7 +28,12 @@ public:
 
 	inline void SetWeight(const u_int _value)
 	{
-		weight = _value;
+		neighbourCount = _value;
+	}
+
+	inline void SetState(const CellState& _cellState)
+	{
+		state = _cellState;
 	}
 
 	inline Coordinate* GetCoordinate()const
@@ -29,9 +41,14 @@ public:
 		return coordinate;
 	}
 
-	inline u_int GetWeight()const
+	inline u_int GetNeighbourCount()const
 	{
-		return weight;
+		return neighbourCount;
+	}
+
+	inline CellState GetCellState()const
+	{
+		return state;
 	}
 
 
@@ -44,9 +61,10 @@ public:
 	
 public:
 	void UpdateCell(const string& _appearance, const u_int& _weight);
-	Coordinate* UpdateWeight(const int _point);
-	
-	void Display() const;
-	string ToString();
+	void UpdateNeighbourCount(const int _point);
+	CellState UpdateCellState();
+	void SelfMutilate();
+	void Display(const bool _debug = false) const;
+	string ToString(const bool _debug = false);
 };
 
